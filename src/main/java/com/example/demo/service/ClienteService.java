@@ -20,9 +20,7 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
-//    public Boolean clienteExiste(String clienteId){
-//        return clienteRepository.findFirstByClienteId(clienteId) != null;
-//    }
+
     public ResponseEntity<Cliente> obtenerClientePorId(Long clienteId){
         return clienteRepository.findById(clienteId)
                 .map(cliente -> ResponseEntity.ok(cliente))
@@ -30,9 +28,6 @@ public class ClienteService {
     }
 
     public ResponseEntity<Cliente> crearCliente(Cliente cliente){
-//        if(clienteExiste(cliente.getClienteId())){
-//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-//        }
 
         if (cliente.getClienteId() == null){
             return ResponseEntity.badRequest().build();
@@ -41,9 +36,8 @@ public class ClienteService {
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevoCliente);
     }
     public ResponseEntity<Cliente> modificarUsuario(Long clienteId,Cliente cliente){
-//        if(clienteExiste(cliente.getClienteId())){
-//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-//        }
+
+
         if (cliente.getClienteId() == null){
             return ResponseEntity.badRequest().build();
         }
