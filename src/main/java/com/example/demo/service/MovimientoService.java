@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entities.Cuenta;
 import com.example.demo.entities.Movimiento;
 import com.example.demo.repository.MovimientoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class MovimientoService {
 
     @Autowired
     private MovimientoRepository movimientoRepository;
+    private CuentaService cuentaService;
 
     public List<Movimiento> obtenerTodosMovimientos(){
         return movimientoRepository.findAll();
@@ -32,6 +34,15 @@ public class MovimientoService {
                 .orElseGet(()-> ResponseEntity.notFound().build());
     }
     public ResponseEntity<Movimiento> crearMovimiento(Movimiento movimientos){
+        if (movimientos.getValor() == 0){
+            ResponseEntity.status(HttpStatus.CREATED).body("No se puede crear un movimiento con valor cero!");
+            return ResponseEntity.badRequest().build();
+        }
+        if(movimientos.getSaldo() == 0){
+            ResponseEntity.status(HttpStatus.CREATED).body("No se puede crear un movimiento con saldo cero!");
+            return ResponseEntity.badRequest().build();
+        }
+
         return ResponseEntity.status(201).body(movimientoRepository.save(movimientos));
     }
 

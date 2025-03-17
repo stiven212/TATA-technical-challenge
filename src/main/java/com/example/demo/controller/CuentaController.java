@@ -27,7 +27,12 @@ public class CuentaController {
     }
     @PostMapping
     public ResponseEntity<Cuenta> crearCuenta(@RequestBody Cuenta cuenta){
-        return cuentaService.crearCuenta(cuenta);
+        try {
+            return cuentaService.crearCuenta(cuenta);
+        }catch (ClassCastException e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping(value = "/{cuentaId}")

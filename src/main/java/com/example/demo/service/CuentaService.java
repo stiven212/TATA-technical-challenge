@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
+import com.example.demo.entities.Cliente;
 import com.example.demo.entities.Cuenta;
+import com.example.demo.repository.ClienteRepository;
 import com.example.demo.repository.CuentaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ public class CuentaService {
     @Autowired
     private CuentaRepository cuentaRepository;
 
+
     public List<Cuenta> obtenerCuentas(){
         return cuentaRepository.findAll();
     }
@@ -29,7 +32,7 @@ public class CuentaService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Cuenta> crearCuenta(Cuenta cuenta){
+    public ResponseEntity<Cuenta> crearCuenta(Cuenta cuenta) throws ClassCastException{
         if(cuentaExiste(cuenta.getNumeroCuenta())){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
@@ -37,6 +40,7 @@ public class CuentaService {
         if (cuenta.getNumeroCuenta() == null){
             return ResponseEntity.badRequest().build();
         }
+
         Cuenta nuevaCuenta = cuentaRepository.save(cuenta);
         return ResponseEntity.status(HttpStatus.CREATED).body(nuevaCuenta);
     }
